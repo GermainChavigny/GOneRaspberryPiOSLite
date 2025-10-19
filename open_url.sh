@@ -2,21 +2,23 @@
 
 # Check if the first URL is provided
 if [ -z "$1" ]; then
-    echo "Usage: $0 <url1> [url2]"
+    echo "Usage: $0 <url1>"
     exit 1
 fi
 
 URL1=$1
-URL2=$2
 
-echo "Launching transition with URL: $URL1"
+echo "Open URL: $URL1"
 
-# Set common Chromium options
-CHROMIUM_OPTIONS="--kiosk --incognito --autoplay-policy=no-user-gesture-required --disable-application-cache --enable-features=GamepadExtensions --disable-extensions --disable-component-update --noerrdialogs --disable-infobars"
+xset -dpms
+xset s off
+xset s noblank
 
-# Launch Chromium with one or two URLs based on input
-if [ -z "$URL2" ]; then
-    flatpak run org.chromium.Chromium $CHROMIUM_OPTIONS "$URL1" &
-else
-    flatpak run org.chromium.Chromium $CHROMIUM_OPTIONS "$URL1" "$URL2" &
-fi
+sleep 0.5
+
+./set_screen_resolution.sh
+
+CHROMIUM_OPTIONS="--remote-debugging-port=9222 --kiosk --start-fullscreen --incognito --enable-features=EnableGamepadAPI,GamepadExtensions,GamepadVibration --autoplay-policy=no-user-gesture-required --disable-application-cache --disable-extensions --disable-component-update --noerrdialogs --disable-infobars"
+
+sleep 1
+flatpak run org.chromium.Chromium $CHROMIUM_OPTIONS "$URL1"

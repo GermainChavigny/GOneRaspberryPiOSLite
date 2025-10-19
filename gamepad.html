@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamepad Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #222;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 24px;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .section {
+            background: #111;
+            padding: 20px;
+            border: 2px solid #0f0;
+            border-radius: 5px;
+        }
+        
+        .section h2 {
+            margin-top: 0;
+            color: #0ff;
+            font-size: 28px;
+        }
+        
+        .gamepad-info {
+            background: #1a1a1a;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #f0f;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .button {
+            padding: 10px;
+            background: #333;
+            border: 2px solid #666;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+        
+        .button.pressed {
+            background: #0f0;
+            color: #000;
+            border-color: #0f0;
+        }
+        
+        .axis-display {
+            margin-top: 15px;
+        }
+        
+        .axis {
+            margin: 10px 0;
+            background: #333;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        .axis-bar {
+            height: 30px;
+            background: #555;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .axis-value {
+            height: 100%;
+            background: #0f0;
+            width: 50%;
+            transition: width 0.05s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+        }
+        
+        .status {
+            font-size: 32px;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .status.connected {
+            background: #0f0;
+            color: #000;
+        }
+        
+        .status.disconnected {
+            background: #f00;
+            color: #fff;
+        }
+        
+        .timestamp {
+            font-size: 16px;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="section">
+            <h2>🎮 GAMEPAD TEST</h2>
+            <div id="status" class="status disconnected">⏳ EN ATTENTE DE MANETTE...</div>
+            <div id="gamepadList"></div>
+        </div>
+    </div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const gamepadListEl = document.getElementById('gamepadList');
+        
+        let connectedGamepads = {};
+        let pollingActive = false;
+        
+        // Événement de connexion standard
+        window.addEventListener('gamepadconnected', (e) => {
+            console.log('EVENT: Gamepad connecté', e.gamepad.id);
+            updateGamepadStatus();
+        });
+        
+        // Événement de déconnexion standard
+        window.addEventListener('gamepaddisconnected', (e) => {
+            console.log('EVENT: Gamepad déconnecté', e.gamepad.id);
+            delete connectedGamepads[e.gamepad.index];
+            updateGamepadStatus();
+        });
+        
+        function updateGamepadStatus() {
+            const gamepads = navigator.getGamepads();
+            connectedGamepads = {};
+            let hasGamepad = false;
+            
+            for (let i = 0; i < gamepads.length; i++) {
+                if (gamepads[i]) {
+                    connectedGamepads[i] = gamepads[i];
+                    hasGamepad = true;
+                }
+            }
+            
+            if (hasGamepad) {
+                statusEl.className = 'status connected';
+                statusEl.textContent = '✅ MANETTE DÉTECTÉE !';
+            } else {
+                statusEl.className = 'status disconnected';
+                statusEl.textContent = '❌ AUCUNE MANETTE DÉTECTÉE';
+            }
+        }
+        
+        function renderGamepad(gamepad, index) {
+            let html = `
+                <div class="gamepad-info">
+                    <strong>Manette ${index + 1}: ${gamepad.id}</strong>
+                    <div class="button-grid">
+            `;
+            
+            // Afficher les boutons
+            for (let i = 0; i < gamepad.buttons.length; i++) {
+                const btn = gamepad.buttons[i];
+                const pressed = btn.pressed || btn.value > 0.5;
+                html += `<div class="button ${pressed ? 'pressed' : ''}">B${i}<br>${(btn.value * 100).toFixed(0)}%</div>`;
+            }
+            
+            html += `</div><div class="axis-display">`;
+            
+            // Afficher les axes (sticks)
+            for (let i = 0; i < gamepad.axes.length; i++) {
+                const value = gamepad.axes[i];
+                const percentage = ((value + 1) / 2) * 100;
+                const label = ['LX', 'LY', 'RX', 'RY'][i] || `Axis${i}`;
+                
+                html += `
+                    <div class="axis">
+                        <strong>${label}</strong>
+                        <div class="axis-bar">
+                            <div class="axis-value" style="width: ${percentage}%">${value.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div></div>`;
+            return html;
+        }
+        
+        function updateDisplay() {
+            const gamepads = navigator.getGamepads();
+            let html = '';
+            
+            for (let i = 0; i < gamepads.length; i++) {
+                if (gamepads[i]) {
+                    html += renderGamepad(gamepads[i], i);
+                }
+            }
+            
+            gamepadListEl.innerHTML = html || '<div style="color: #888;">Aucune manette connectée</div>';
+        }
+        
+        // Polling continu (important pour certains navigateurs/OS)
+        function startPolling() {
+            if (pollingActive) return;
+            pollingActive = true;
+            
+            setInterval(() => {
+                updateGamepadStatus();
+                updateDisplay();
+            }, 50);
+            
+            console.log('Polling démarré');
+        }
+        
+        // Démarrez le polling au chargement
+        window.addEventListener('load', () => {
+            console.log('Page chargée, démarrage du polling');
+            startPolling();
+            updateGamepadStatus();
+        });
+        
+        // Force initial
+        setTimeout(() => {
+            navigator.getGamepads();
+            startPolling();
+        }, 1000);
+        
+        // Log pour debug
+        console.log('Script gamepad test chargé');
+    </script>
+</body>
+</html>
