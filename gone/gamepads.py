@@ -21,7 +21,7 @@ from .players import PlayerStore
 
 log = logging.getLogger(__name__)
 
-VKBD_NAME = "GOne Virtual Keyboard"
+VKBD_NAME = "G one Virtual Keyboard"
 RESCAN_SECONDS = 2.0
 
 

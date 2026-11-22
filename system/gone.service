@@ -1,5 +1,5 @@
 [Unit]
-Description=Console GOne (cartouches, manettes, boutons, menu)
+Description=Console G one (cartouches, manettes, boutons, menu)
 After=systemd-udevd.service NetworkManager.service
 
 [Service]

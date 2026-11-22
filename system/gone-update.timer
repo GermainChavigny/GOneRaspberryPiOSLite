@@ -1,5 +1,5 @@
 [Unit]
-Description=Recherche périodique des mises à jour de la console GOne
+Description=Recherche périodique des mises à jour de la console G one
 
 [Timer]
 OnBootSec=2min

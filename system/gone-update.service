@@ -1,5 +1,5 @@
 [Unit]
-Description=Mise à jour automatique de la console GOne
+Description=Mise à jour automatique de la console G one
 Wants=network-online.target
 After=network-online.target
 

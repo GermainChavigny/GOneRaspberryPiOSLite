@@ -29,7 +29,7 @@ EXEC_LINE="exec $SCRIPT_PATH"
 # Vérifier si déjà présent
 if grep -q "GOne Auto-Startup" "$BASH_RC"; then
     if [ "$FORCE" = false ]; then
-        echo "GOne est déjà configuré dans .bashrc"
+        echo "G one est déjà configuré dans .bashrc"
         echo "Utilisez --force pour le mettre à jour: $0 --force"
         exit 0
     else
@@ -39,7 +39,7 @@ if grep -q "GOne Auto-Startup" "$BASH_RC"; then
 fi
 
 # Ajouter au .bashrc
-echo "Ajout de GOne à .bashrc..."
+echo "Ajout de G one à .bashrc..."
 cat >> "$BASH_RC" << EOF
 
 $STARTUP_LINE

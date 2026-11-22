@@ -16,7 +16,7 @@ if [ "$count" -ge 3 ] && [ -L "$PREFIX/previous" ]; then
     bad="$(cat "$PREFIX/current/VERSION" 2>/dev/null || echo inconnue)"
     previous="$(readlink -f "$PREFIX/previous")"
     if [ -d "$previous" ] && [ "$previous" != "$(readlink -f "$PREFIX/current")" ]; then
-        echo "GOne : $bad ne démarre pas, retour à $(cat "$previous/VERSION" 2>/dev/null)"
+        echo "G one : $bad ne démarre pas, retour à $(cat "$previous/VERSION" 2>/dev/null)"
         echo "$bad" >> "$STATE/bad-versions"
         ln -sfn "$previous" "$PREFIX/current.new" && mv -Tf "$PREFIX/current.new" "$PREFIX/current"
         rm -f "$PREFIX/previous"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Configuration du système pour la console GOne. Peut être relancé sans risque :
+# Configuration du système pour la console G one. Peut être relancé sans risque :
 # chaque étape vérifie d'abord si elle est déjà faite.
 # Appelé par install.sh à l'installation et à chaque mise à jour.
 #   usage : setup-system.sh <utilisateur>
@@ -79,7 +79,7 @@ chown "$USER_NAME": "$BASHRC"
 mkdir -p /var/lib/gone /etc/gone
 if [ ! -f /etc/gone/config.toml ]; then
     cat > /etc/gone/config.toml <<'CONFIG'
-# Réglages de la console GOne (tous facultatifs ; valeurs par défaut en commentaire).
+# Réglages de la console G one (tous facultatifs ; valeurs par défaut en commentaire).
 # gpio_reset = 17               # bouton reset (numéro BCM)
 # gpio_power = 3                # bouton marche/arrêt (numéro BCM)
 # settings_combo_seconds = 3.0  # maintien bleu + rouge pour ouvrir les réglages
@@ -88,7 +88,7 @@ if [ ! -f /etc/gone/config.toml ]; then
 CONFIG
 fi
 [ -f /etc/gone/kiosk.env ] || cat > /etc/gone/kiosk.env <<'CONFIG'
-# Affichage de la console GOne.
+# Affichage de la console G one.
 GONE_RESOLUTION=640x480
 CONFIG
 

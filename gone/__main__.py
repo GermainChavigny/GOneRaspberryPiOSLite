@@ -49,7 +49,7 @@ async def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s", stream=sys.stdout)
     cfg = config.load()
     cfg.state_dir.mkdir(parents=True, exist_ok=True)
-    log.info("GOne %s%s", config.version(), " (mode dev, sans matériel)" if cfg.dev else "")
+    log.info("G one %s%s", config.version(), " (mode dev, sans matériel)" if cfg.dev else "")
 
     gamepads = None
     keep_alive: list = []

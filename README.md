@@ -1,4 +1,4 @@
-# GOne — logiciel de la console
+# G one — logiciel de la console
 
 Console rétro sur Raspberry Pi : un lecteur de cartouches (cartes CompactFlash), deux
 manettes USB, un bouton reset et un bouton marche/arrêt. Les jeux sont des exports HTML

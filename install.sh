@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installeur de la console GOne, pour Raspberry Pi OS Lite (64 bits).
+# Installeur de la console G one, pour Raspberry Pi OS Lite (64 bits).
 #
 #   curl -fsSL https://raw.githubusercontent.com/GermainChavigny/GOneRaspberryPiOSLite/master/install.sh | sudo bash
 #
@@ -47,7 +47,7 @@ main() {
         *) version="dev-${ref//\//-}-$(date +%Y%m%d%H%M%S)" ;;
     esac
 
-    echo "==> GOne : installation de $version pour l'utilisateur $user"
+    echo "==> G one : installation de $version pour l'utilisateur $user"
     mkdir -p "$prefix/releases"
     rm -rf "$prefix"/releases/.download.*
     local tmp dest="$prefix/releases/$version"
@@ -84,7 +84,7 @@ main() {
         [ "$release" = "$dest" ] || [ "$release" = "$keep_previous" ] || rm -rf "$release"
     done
 
-    echo "==> GOne $version installé."
+    echo "==> G one $version installé."
     if [ "$reboot" = yes ]; then
         echo "Redémarrage dans 5 secondes (Ctrl+C pour annuler)…"
         sleep 5
