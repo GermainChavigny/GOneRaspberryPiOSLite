@@ -1,0 +1,15 @@
+[Unit]
+Description=Console GOne (cartouches, manettes, boutons, menu)
+After=systemd-udevd.service NetworkManager.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/gone/current
+Environment=PYTHONPATH=/opt/gone/current PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ExecStartPre=/bin/bash /opt/gone/current/scripts/guard.sh
+ExecStart=/usr/bin/python3 -m gone
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Recherche périodique des mises à jour de la console GOne
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=12h
+RandomizedDelaySec=1min
+
+[Install]
+WantedBy=timers.target

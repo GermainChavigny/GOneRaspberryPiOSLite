@@ -1,0 +1,10 @@
+# Les scripts doivent garder des fins de ligne Unix, même édités sous Windows.
+*.sh text eol=lf
+*.py text eol=lf
+*.service text eol=lf
+*.timer text eol=lf
+# Non inclus dans les archives installées sur la console.
+legacy/ export-ignore
+tests/ export-ignore
+tools/ export-ignore
+.github/ export-ignore

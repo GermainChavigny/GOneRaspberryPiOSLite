@@ -1,0 +1,10 @@
+[Unit]
+Description=Mise à jour automatique de la console GOne
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/gone/current/scripts/update.sh
+# 10 = nouvelle version installée (prise en compte au prochain démarrage)
+SuccessExitStatus=10
